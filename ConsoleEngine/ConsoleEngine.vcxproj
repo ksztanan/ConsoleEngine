@@ -18,6 +18,26 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\config.cpp" />
+    <ClCompile Include="src\engine.cpp" />
+    <ClCompile Include="src\entity.cpp" />
+    <ClCompile Include="src\entityFactory.cpp" />
+    <ClCompile Include="src\gameSession.cpp" />
+    <ClCompile Include="src\inputManager.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\utility.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\config.h" />
+    <ClInclude Include="src\engine.h" />
+    <ClInclude Include="src\entity.h" />
+    <ClInclude Include="src\entityFactory.h" />
+    <ClInclude Include="src\gameSession.h" />
+    <ClInclude Include="src\inputManager.h" />
+    <ClInclude Include="src\types.h" />
+    <ClInclude Include="src\utility.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{2E1DD752-32E1-43F6-97BB-4E0C972AA516}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
@@ -141,26 +161,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="config.cpp" />
-    <ClCompile Include="engine.cpp" />
-    <ClCompile Include="entity.cpp" />
-    <ClCompile Include="entityFactory.cpp" />
-    <ClCompile Include="gameSession.cpp" />
-    <ClCompile Include="inputManager.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="utility.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="config.h" />
-    <ClInclude Include="engine.h" />
-    <ClInclude Include="entity.h" />
-    <ClInclude Include="entityFactory.h" />
-    <ClInclude Include="gameSession.h" />
-    <ClInclude Include="inputManager.h" />
-    <ClInclude Include="types.h" />
-    <ClInclude Include="utility.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

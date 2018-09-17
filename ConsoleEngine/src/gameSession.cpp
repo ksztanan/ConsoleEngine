@@ -52,7 +52,7 @@ namespace engine
 
 	void GameSession::Initialize()
 	{
-		LoadWorld( "map_large.txt" );
+		LoadWorld( "data/map_large.txt" );
 		m_localToWorld = Vector2( 0, 0 );
 		CreateLocalArea( m_localToWorld );
 

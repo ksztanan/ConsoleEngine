@@ -1,5 +1,6 @@
 #include "inputManager.h"
 #include "types.h"
+
 #include <conio.h>
 
 InputManager::InputManager()

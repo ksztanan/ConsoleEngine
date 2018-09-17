@@ -19,12 +19,12 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\config.cpp" />
     <ClCompile Include="src\engine.cpp" />
     <ClCompile Include="src\entity.cpp" />
     <ClCompile Include="src\entityFactory.cpp" />
     <ClCompile Include="src\gameSession.cpp" />
     <ClCompile Include="src\inputManager.cpp" />
+    <ClCompile Include="src\map.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\utility.cpp" />
   </ItemGroup>
@@ -35,6 +35,7 @@
     <ClInclude Include="src\entityFactory.h" />
     <ClInclude Include="src\gameSession.h" />
     <ClInclude Include="src\inputManager.h" />
+    <ClInclude Include="src\map.h" />
     <ClInclude Include="src\types.h" />
     <ClInclude Include="src\utility.h" />
   </ItemGroup>

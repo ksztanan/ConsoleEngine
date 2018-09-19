@@ -4,22 +4,54 @@
 
 #include <iostream>
 #include <assert.h>
+#include <array>
 
 // temp
-extern unsigned int bytesAllocated = 0;
+using Uint32 = unsigned int;
+
+struct MemoryAlloc
+{
+	MemoryAlloc() : m_address( 0 ), m_size( 0 ) {}
+	MemoryAlloc( Uint32 address, Uint32 size ) : m_address( address ), m_size( size ) {}
+
+	Uint32 m_address;
+	Uint32 m_size;
+};
+
+const Uint32 ARRAY_SIZE = 1000;
+std::array< MemoryAlloc, ARRAY_SIZE > memoryRecords;
+static Uint32 totalBytesAllocated = 0;
 
 void* operator new( size_t size )
 {
 	void* address = malloc( size );
 	assert( address );
-	bytesAllocated += size;
 
+	for( int i = 0; i < ARRAY_SIZE; ++i )
+	{
+		if( memoryRecords[ i ].m_address == 0 )
+		{
+			memoryRecords[ i ] = MemoryAlloc( (Uint32)address, size );
+			totalBytesAllocated += size;
+			break;
+		}
+	}
+	
 	return address;
 }
 
 void operator delete( void* address )
 {
-	// todo - how to count freed mem?
+	for( int i = 0; i < ARRAY_SIZE; ++i )
+	{
+		if( memoryRecords[ i ].m_address == (Uint32)address )
+		{
+			totalBytesAllocated -= memoryRecords[ i ].m_size;
+			memoryRecords[ i ] = MemoryAlloc();
+			break;
+		}
+	}
+	
 	free( address );
 }
 // temp end
@@ -96,7 +128,16 @@ namespace engine
 	{
 		std::cout << "Engine Debug:\n";
 		std::cout << "--------------------------------\n";
-		std::cout << "Allocated bytes: " << bytesAllocated << "\n";
+		std::cout << "Allocated bytes: " << totalBytesAllocated << "\n";
+
+		/*for( int i = 0; i < ARRAY_SIZE; ++i )
+		{
+			if( memoryRecords[ i ].m_address != 0 )
+			{
+				std::cout << "Allocation: Address: " << memoryRecords[ i ].m_address << " Size: " << memoryRecords[ i ].m_size << "\n";
+			}
+		}*/
+
 		std::cout << "\n";
 	}
 }

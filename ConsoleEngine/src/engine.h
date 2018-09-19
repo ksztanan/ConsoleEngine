@@ -2,8 +2,6 @@
 
 #include "inputManager.h"
 
-extern unsigned int bytesAllocated;
-
 namespace engine
 {
 	class GameSession;

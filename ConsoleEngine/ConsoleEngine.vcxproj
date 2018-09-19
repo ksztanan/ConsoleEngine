@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\allocationTracker.cpp" />
     <ClCompile Include="src\engine.cpp" />
     <ClCompile Include="src\entity.cpp" />
     <ClCompile Include="src\entityFactory.cpp" />
@@ -29,6 +30,7 @@
     <ClCompile Include="src\utility.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\allocationTracker.h" />
     <ClInclude Include="src\config.h" />
     <ClInclude Include="src\engine.h" />
     <ClInclude Include="src\entity.h" />

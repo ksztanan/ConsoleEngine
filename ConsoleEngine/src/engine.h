@@ -1,6 +1,7 @@
 #pragma once
 
 #include "inputManager.h"
+#include "allocationTracker.h"
 
 namespace engine
 {
@@ -15,6 +16,7 @@ namespace engine
 		void Run();
 
 		InputManager& GetInputManager();
+		AllocationTracker& GetAllocationTracker();
 
 	private:
 		Engine();
@@ -29,6 +31,7 @@ namespace engine
 
 	private:
 		InputManager m_inputManager;
+		AllocationTracker m_allocationTracker;
 		GameSession* m_gameSession;
 	};
 }

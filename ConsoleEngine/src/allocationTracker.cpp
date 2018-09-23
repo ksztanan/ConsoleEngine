@@ -6,7 +6,6 @@
 AllocationTracker::AllocationTracker()
 	: m_totalBytesAllocated( 0 )
 	, m_totalAllocations( 0 )
-	, m_allocatedMemoryPct( 0.f )
 	, m_showDetailedDebug( false )
 {}
 
@@ -26,7 +25,6 @@ void AllocationTracker::Allocate( void* address, const Uint32 size )
 			m_allocations[ i ] = Allocation( address, size );
 			m_totalBytesAllocated += size;
 			++m_totalAllocations;
-			m_allocatedMemoryPct = 100.f * (float)( m_totalBytesAllocated / 1024 ) / MEMORY_KILOBYTES;
 			return;
 		}
 	}
@@ -47,7 +45,6 @@ void AllocationTracker::Deallocate( void* address )
 		{
 			m_totalBytesAllocated -= m_allocations[ i ].m_size;
 			--m_totalAllocations;
-			m_allocatedMemoryPct = 100.f * (float)( m_totalBytesAllocated / 1024 ) / MEMORY_KILOBYTES;
 			m_allocations[ i ] = Allocation();
 			return;
 		}
@@ -58,13 +55,20 @@ void AllocationTracker::Deallocate( void* address )
 
 void AllocationTracker::DrawDebug() const
 {
-	const Uint32 allocatedKilobytes = (Uint32)m_totalBytesAllocated / 1024;
-	const Uint32 remainingBytes = m_totalBytesAllocated % 1024;
-
+	const Uint32 allocatedKilobytes = m_totalBytesAllocated / 1024;
+	const Uint32 allocatedBytesRemainder = m_totalBytesAllocated % 1024;
+	const Uint32 freeBytes = ( MEMORY_KILOBYTES * 1024 ) - m_totalBytesAllocated;
+	const Uint32 freeKilobytes = freeBytes / 1024;
+	const Uint32 freeBytesRemainder = freeBytes % 1024;
+	
 	std::cout << "AllocationTracker Debug:\n";
-	std::cout << "--------------------------------\n";
-	std::cout << "Allocated memory: " << allocatedKilobytes <<"[kB] " << remainingBytes << "[B] - " << m_allocatedMemoryPct<< "% of " << MEMORY_KILOBYTES << "[kB]\n";
-	std::cout << "Total allocations: " << m_totalAllocations << "\n";
+	std::cout << "--------------------------------------\n";
+	std::cout << "MEMORY"				<< "\t\t\t"		<< "[kB]"				<< "\t" << "[B]"					<< "\n";
+	std::cout << "Allocated:"			<< "\t\t"		<< allocatedKilobytes	<< "\t" << allocatedBytesRemainder	<< "\n";
+	std::cout << "Free:"				<< "\t\t\t"		<< freeKilobytes		<< "\t" << freeBytesRemainder		<< "\n";
+	std::cout << "\n";
+	std::cout << "ALLOCATIONS"			<< "\t\t\t"										<< "[-]"					<< "\n";
+	std::cout << "Count:"				<< "\t\t\t\t"									<< m_totalAllocations		<< "\n";
 	std::cout << "\n";
 
 	if( m_showDetailedDebug )

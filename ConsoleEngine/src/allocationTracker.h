@@ -28,6 +28,5 @@ private:
 	std::array< Allocation, ALLOCATIONS_CAP > m_allocations;
 	Uint32 m_totalBytesAllocated;
 	Uint32 m_totalAllocations;
-	float m_allocatedMemoryPct;
 	bool m_showDetailedDebug;
 };

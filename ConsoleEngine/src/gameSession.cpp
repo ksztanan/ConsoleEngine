@@ -165,7 +165,7 @@ namespace engine
 		Vector2 playerWorldPos = Vector2( playerLocalPos.X + localToWorld.X, playerLocalPos.Y + localToWorld.Y );
 
 		std::cout << "GameSession Debug:\n";
-		std::cout << "--------------------------------\n";
+		std::cout << "--------------------------------------\n";
 		std::cout << "Player local pos: [ " << playerLocalPos.X << ", " << playerLocalPos.Y << " ]\n";
 		std::cout << "Player world pos: [ " << playerWorldPos.X << ", " << playerWorldPos.Y << " ]\n";
 		std::cout << "LocalToWorld: [ " << localToWorld.X << ", " << localToWorld.Y << " ]\n";

@@ -32,7 +32,9 @@ namespace engine
 
 	Engine::Engine()
 		: m_gameSession( nullptr )
-	{}
+	{
+		m_allocationTracker.Allocate( this, sizeof( Engine ) - sizeof( AllocationTracker ) );
+	}
 
 	Engine::~Engine()
 	{
@@ -40,6 +42,8 @@ namespace engine
 		{
 			delete m_gameSession;
 		}
+
+		m_allocationTracker.Deallocate( this );
 	}
 
 	void Engine::Run()

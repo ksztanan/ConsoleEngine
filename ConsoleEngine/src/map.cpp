@@ -65,7 +65,7 @@ void Map::LoadWorld( const char* fileName )
 	}
 }
 
-void Map::CreateLocalMap( const Vector2 & offset )
+void Map::CreateLocalMap( const Vector2& offset )
 {
 	EntityFactory factory;
 
@@ -82,7 +82,7 @@ void Map::CreateLocalMap( const Vector2 & offset )
 	}
 }
 
-void Map::RefreshLocalMap( const Vector2 & offset )
+void Map::RefreshLocalMap( const Vector2& offset )
 {
 	DeleteLocalMap();
 	CreateLocalMap( offset );
@@ -105,7 +105,7 @@ const Vector2& Map::GetLocalToWorld() const
 	return m_localToWorld;
 }
 
-const Entity* Map::GetEntityAt( const Vector2 & pos ) const
+const Entity* Map::GetEntityAt( const Vector2& pos ) const
 {
 	return m_localMap[ pos.X ][ pos.Y ];
 }

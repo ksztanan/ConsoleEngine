@@ -6,6 +6,7 @@ class AllocationTracker
 {
 	using Uint32 = unsigned int;
 	static constexpr Uint32 ALLOCATIONS_CAP = 1000;
+	static constexpr Uint32 MEMORY_KILOBYTES = 256;
 
 public:
 	AllocationTracker();
@@ -26,5 +27,7 @@ private:
 
 	std::array< Allocation, ALLOCATIONS_CAP > m_allocations;
 	Uint32 m_totalBytesAllocated;
+	Uint32 m_totalAllocations;
+	float m_allocatedMemoryPct;
 	bool m_showDetailedDebug;
 };

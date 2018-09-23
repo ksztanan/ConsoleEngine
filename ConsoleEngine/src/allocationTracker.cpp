@@ -1,9 +1,12 @@
 #include "allocationTracker.h"
 
 #include <iostream>
+#include <assert.h>
 
 AllocationTracker::AllocationTracker()
 	: m_totalBytesAllocated( 0 )
+	, m_totalAllocations( 0 )
+	, m_allocatedMemoryPct( 0.f )
 	, m_showDetailedDebug( false )
 {}
 
@@ -18,11 +21,17 @@ void AllocationTracker::Allocate( void* address, const Uint32 size )
 	{
 		if( m_allocations[ i ].m_address == 0 )
 		{
+			assert( ( ( m_totalBytesAllocated + size ) / 1024 ) < MEMORY_KILOBYTES );
+
 			m_allocations[ i ] = Allocation( address, size );
 			m_totalBytesAllocated += size;
+			++m_totalAllocations;
+			m_allocatedMemoryPct = 100.f * (float)( m_totalBytesAllocated / 1024 ) / MEMORY_KILOBYTES;
 			return;
 		}
 	}
+
+	assert( false );
 }
 
 void AllocationTracker::Deallocate( void* address )
@@ -37,10 +46,14 @@ void AllocationTracker::Deallocate( void* address )
 		if( m_allocations[ i ].m_address == address )
 		{
 			m_totalBytesAllocated -= m_allocations[ i ].m_size;
+			--m_totalAllocations;
+			m_allocatedMemoryPct = 100.f * (float)( m_totalBytesAllocated / 1024 ) / MEMORY_KILOBYTES;
 			m_allocations[ i ] = Allocation();
 			return;
 		}
 	}
+
+	assert( false );
 }
 
 void AllocationTracker::DrawDebug() const
@@ -50,7 +63,8 @@ void AllocationTracker::DrawDebug() const
 
 	std::cout << "AllocationTracker Debug:\n";
 	std::cout << "--------------------------------\n";
-	std::cout << "Allocated memory: " << allocatedKilobytes <<" kB, " << remainingBytes << " B" << "\n";
+	std::cout << "Allocated memory: " << allocatedKilobytes <<"[kB] " << remainingBytes << "[B] - " << m_allocatedMemoryPct<< "% of " << MEMORY_KILOBYTES << "[kB]\n";
+	std::cout << "Total allocations: " << m_totalAllocations << "\n";
 	std::cout << "\n";
 
 	if( m_showDetailedDebug )
@@ -66,8 +80,6 @@ void AllocationTracker::DrawDebug() const
 
 		std::cout << "\n";
 	}
-	
-	
 }
 
 AllocationTracker::Allocation::Allocation()

@@ -56,6 +56,7 @@ namespace engine
 			HandleGameSession();
 			DrawDebug();
 			m_inputManager.Update();
+			m_allocationTracker.ResetFrame();
 		}
 
 		DestroyGameSession();

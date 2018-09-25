@@ -13,6 +13,7 @@ public:
 
 	void Allocate( void* address, const Uint32 size );
 	void Deallocate( void* address );
+	void ResetFrame();
 	void DrawDebug() const;
 
 private:
@@ -28,5 +29,6 @@ private:
 	std::array< Allocation, ALLOCATIONS_CAP > m_allocations;
 	Uint32 m_totalBytesAllocated;
 	Uint32 m_totalAllocations;
-	bool m_showDetailedDebug;
+	Uint32 m_frameBytesAllocated;
+	Uint32 m_frameBytesFreed;
 };

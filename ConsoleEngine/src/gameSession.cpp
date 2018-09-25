@@ -108,22 +108,22 @@ namespace engine
 		}
 
 		// todo - magic numbers
-		if( ( m_player->GetPos().X < 7 ) && ( dir == Dir::Right ) )
+		if( ( m_player->GetPos().X < config::PLAYER_SPAWN_X ) && ( dir == Dir::Right ) )
 		{
 			return false;
 		}
 
-		if( ( m_player->GetPos().X > ( config::LOC_MAP_SIZE_X - 8 ) ) && ( dir == Dir::Left ) )
+		if( ( m_player->GetPos().X > ( config::LOC_MAP_SIZE_X - config::PLAYER_SPAWN_X + 1 ) ) && ( dir == Dir::Left ) )
 		{
 			return false;
 		}
 
-		if( ( m_player->GetPos().Y < 4 ) && ( dir == Dir::Down ) )
+		if( ( m_player->GetPos().Y < config::PLAYER_SPAWN_Y ) && ( dir == Dir::Down ) )
 		{
 			return false;
 		}
 
-		if( ( m_player->GetPos().Y > ( config::LOC_MAP_SIZE_Y - 5 ) ) && ( dir == Dir::Up ) )
+		if( ( m_player->GetPos().Y > ( config::LOC_MAP_SIZE_Y - config::PLAYER_SPAWN_Y + 1 ) ) && ( dir == Dir::Up ) )
 		{
 			return false;
 		}

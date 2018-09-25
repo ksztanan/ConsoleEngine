@@ -35,7 +35,7 @@ void Map::MoveLocalMap( Dir dir )
 	utility::DirToOffset( dir, offset );
 	m_localToWorld += offset;
 
-	RefreshLocalMap( m_localToWorld );
+	HandleStreaming( dir );
 }
 
 void Map::LoadWorld( const char* fileName )
@@ -82,12 +82,6 @@ void Map::CreateLocalMap( const Vector2& offset )
 	}
 }
 
-void Map::RefreshLocalMap( const Vector2& offset )
-{
-	DeleteLocalMap();
-	CreateLocalMap( offset );
-}
-
 void Map::DeleteLocalMap()
 {
 	for( int y = 0; y < config::LOC_MAP_SIZE_Y; ++y )
@@ -99,6 +93,83 @@ void Map::DeleteLocalMap()
 		}
 	}
 }
+
+void Map::HandleStreaming( Dir dir )
+{
+	Uint8 newObj = 0;
+	Uint8 deletedObj = 0;
+
+	EntityFactory factory;
+	if( dir == Dir::Up )
+	{
+		//delete bottom line
+		for( int x = 0; x < config::LOC_MAP_SIZE_X; ++x )
+		{
+			delete m_localMap[ x ][ config::LOC_MAP_SIZE_Y - 1 ];
+			++deletedObj;
+		}
+
+		// move lines down
+		for( int y = config::LOC_MAP_SIZE_Y - 1; y > 0; --y )
+		{
+			for( int x = 0; x < config::LOC_MAP_SIZE_X; ++x )
+			{
+				m_localMap[ x ][ y ] = m_localMap[ x ][ y - 1 ];
+			}
+		}
+
+		//create and insert top line
+		for( int x = 0; x < config::LOC_MAP_SIZE_X; ++x )
+		{
+			Entity* entityPtr = factory.CreateObject( m_worldMap[ m_localToWorld.X + x ][ m_localToWorld.Y ] );
+			assert( entityPtr );
+			++newObj;
+
+			m_localMap[ x ][ 0 ] = entityPtr;
+		}
+	}
+	else if( dir == Dir::Down )
+	{
+		//delete top line
+		for( int x = 0; x < config::LOC_MAP_SIZE_X; ++x )
+		{
+			delete m_localMap[ x ][ 0 ];
+			++deletedObj;
+		}
+
+		// move lines up
+		for( int y = 1; y < config::LOC_MAP_SIZE_Y; ++y )
+		{
+			for( int x = 0; x < config::LOC_MAP_SIZE_X; ++x )
+			{
+				m_localMap[ x ][ y - 1 ] = m_localMap[ x ][ y ];
+			}
+		}
+
+		//create and insert bottom line
+		for( int x = 0; x < config::LOC_MAP_SIZE_X; ++x )
+		{
+			Entity* entityPtr = factory.CreateObject( m_worldMap[ m_localToWorld.X + x ][ m_localToWorld.Y + config::LOC_MAP_SIZE_Y - 1 ] );
+			assert( entityPtr );
+			++newObj;
+
+			m_localMap[ x ][ config::LOC_MAP_SIZE_Y - 1 ] = entityPtr;
+		}
+	}
+	else if( dir == Dir::Right )
+	{
+		DeleteLocalMap();
+		CreateLocalMap( m_localToWorld );
+	}
+	else if( dir == Dir::Left )
+	{	
+		DeleteLocalMap();
+		CreateLocalMap( m_localToWorld );
+	}
+
+	assert( newObj == deletedObj );
+}
+
 
 const Vector2& Map::GetLocalToWorld() const
 {

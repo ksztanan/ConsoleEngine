@@ -21,9 +21,9 @@ public:
 	
 private:
 	void LoadWorld( const char* fileName );
-	void CreateLocalMap( const Vector2& offset );
-	void RefreshLocalMap( const Vector2& offset );
+	void CreateLocalMap( const Vector2& offset );	
 	void DeleteLocalMap();
+	void HandleStreaming( Dir dir );
 
 private:
 	Uint8 m_worldMap[ config::WORLD_MAP_SIZE_X ][ config::WORLD_MAP_SIZE_Y ];

@@ -1,5 +1,6 @@
 #include "entity.h"
 #include "utility.h"
+#include "config.h"
 
 Terrain::Terrain()
 	: m_type( TerrainType::Invalid )
@@ -31,7 +32,7 @@ char Terrain::GetIcon() const
 
 Player::Player()
 {
-	m_pos = Vector2( 7, 4 );
+	m_pos = Vector2( config::PLAYER_SPAWN_X, config::PLAYER_SPAWN_Y );
 }
 
 bool Player::IsWalkable() const

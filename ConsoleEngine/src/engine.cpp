@@ -48,23 +48,41 @@ namespace engine
 
 	void Engine::Run()
 	{
-		CreateGameSession();
+		bool mainLoop = true;
+		while( mainLoop )
+		{
+			CreateGameSession();
 
-		while( true )
-		{		
-			system( "cls" );
-			HandleGameSession();
-			DrawDebug();
-			m_inputManager.Update();
-			m_allocationTracker.ResetFrame();
-		}
+			while( true )
+			{
+				system( "cls" );
+				HandleGameSession();
+				DrawDebug();
+				m_inputManager.Update();
+				if( m_inputManager.GetRestartRequest() )
+				{
+					break;
+				}
+				else if( m_inputManager.GetExitRequest() )
+				{
+					mainLoop = false;
+					break;
+				}
+				m_allocationTracker.ResetFrame();
+			}
 
-		DestroyGameSession();
+			DestroyGameSession();
+		}	
 	}
 
 	InputManager& Engine::GetInputManager()
 	{
 		return m_inputManager;
+	}
+
+	SaveSystem& Engine::GetSaveSystem()
+	{
+		return m_saveSystem;
 	}
 
 	AllocationTracker& Engine::GetAllocationTracker()

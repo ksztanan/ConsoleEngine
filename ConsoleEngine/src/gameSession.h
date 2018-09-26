@@ -17,12 +17,13 @@ namespace engine
 		void Update();
 
 	private:
-		void Initialize();
-
 		void HandleMovement();
 		bool IsMovementPossible( Dir dir ) const;
 		bool IsWithinLocalBounds( const Vector2& pos ) const;
 		bool ShouldMoveLocalMap( Dir dir ) const;
+
+		void OnSave();
+		void OnLoad();
 
 		void Draw();
 		void DrawDebug() const;

@@ -1,5 +1,11 @@
 #pragma once
 
+enum SaveDataType
+{
+	PlayerPos,
+	MapPos
+};
+
 enum TerrainType
 {
 	Ground,

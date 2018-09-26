@@ -27,6 +27,7 @@
     <ClCompile Include="src\inputManager.cpp" />
     <ClCompile Include="src\map.cpp" />
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\saveSystem.cpp" />
     <ClCompile Include="src\utility.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -38,6 +39,7 @@
     <ClInclude Include="src\gameSession.h" />
     <ClInclude Include="src\inputManager.h" />
     <ClInclude Include="src\map.h" />
+    <ClInclude Include="src\saveSystem.h" />
     <ClInclude Include="src\types.h" />
     <ClInclude Include="src\utility.h" />
   </ItemGroup>

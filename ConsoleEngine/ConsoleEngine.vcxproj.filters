@@ -42,6 +42,9 @@
     <ClCompile Include="src\allocationTracker.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\saveSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\config.h">
@@ -73,6 +76,9 @@
     </ClInclude>
     <ClInclude Include="src\allocationTracker.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\saveSystem.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

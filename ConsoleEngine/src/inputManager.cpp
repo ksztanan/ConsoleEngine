@@ -37,6 +37,21 @@ Dir InputManager::GetMovementDir() const
 	return dir;
 }
 
+bool InputManager::GetRestartRequest() const
+{
+	return m_lastInput == 'r';
+}
+
+bool InputManager::GetExitRequest() const
+{
+	return m_lastInput == 'q';
+}
+
+bool InputManager::GetSaveRequest() const
+{
+	return m_lastInput == 'p';
+}
+
 unsigned char InputManager::GetLastInput() const
 {
 	return m_lastInput;

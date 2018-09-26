@@ -1,12 +1,14 @@
 #include "map.h"
 #include "entityFactory.h"
 #include "utility.h"
+#include "engine.h"
 
 #include <fstream>
 #include <string>
 #include <assert.h>
 
 Map::Map()
+	: m_localToWorld( Vector2( 0, 0 ) )
 {
 	for( int y = 0; y < config::LOC_MAP_SIZE_Y; ++y )
 	{
@@ -15,18 +17,14 @@ Map::Map()
 			m_localMap[ x ][ y ] = nullptr;
 		}
 	}
+
+	LoadWorld( "data/map_large.txt" );
+	OnLoad();
 }
 
 Map::~Map()
 {
 	DeleteLocalMap();
-}
-
-void Map::Initialize()
-{
-	LoadWorld( "data/map_large.txt" );
-	m_localToWorld = Vector2( 0, 0 );
-	CreateLocalMap( m_localToWorld );
 }
 
 void Map::MoveLocalMap( Dir dir )
@@ -203,6 +201,11 @@ void Map::HandleStreaming( Dir dir )
 	}
 }
 
+void Map::SetLocalToWorld( const Vector2& l2w )
+{
+	m_localToWorld = l2w;
+}
+
 const Vector2& Map::GetLocalToWorld() const
 {
 	return m_localToWorld;
@@ -211,4 +214,17 @@ const Vector2& Map::GetLocalToWorld() const
 const Entity* Map::GetEntityAt( const Vector2& pos ) const
 {
 	return m_localMap[ pos.X ][ pos.Y ];
+}
+
+void Map::OnSave()
+{
+	engine::Engine::Get().GetSaveSystem().Save( SaveDataType::MapPos, this );
+}
+
+void Map::OnLoad()
+{
+	engine::Engine::Get().GetSaveSystem().Load( SaveDataType::MapPos, this );
+
+	DeleteLocalMap();
+	CreateLocalMap( m_localToWorld );
 }

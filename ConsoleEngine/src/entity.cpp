@@ -1,4 +1,5 @@
 #include "entity.h"
+#include "engine.h"
 #include "utility.h"
 #include "config.h"
 
@@ -9,6 +10,10 @@ Terrain::Terrain()
 Terrain::Terrain( const TerrainType type )
 	: m_type( type )
 {}
+
+Terrain::~Terrain()
+{
+}
 
 bool Terrain::IsWalkable() const
 {
@@ -33,6 +38,12 @@ char Terrain::GetIcon() const
 Player::Player()
 {
 	m_pos = Vector2( config::PLAYER_SPAWN_X, config::PLAYER_SPAWN_Y );
+
+	OnLoad();
+}
+
+Player::~Player()
+{
 }
 
 bool Player::IsWalkable() const
@@ -47,6 +58,21 @@ void Player::Interact()
 char Player::GetIcon() const
 {
 	return '@';
+}
+
+void Player::OnSave()
+{
+	engine::Engine::Get().GetSaveSystem().Save( SaveDataType::PlayerPos, this );
+}
+
+void Player::OnLoad()
+{
+	engine::Engine::Get().GetSaveSystem().Load( SaveDataType::PlayerPos, this );
+}
+
+void Player::SetPos( const Vector2& pos )
+{
+	m_pos = pos;
 }
 
 Vector2& Player::GetPos()

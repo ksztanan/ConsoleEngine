@@ -2,10 +2,9 @@
 
 #include "types.h"
 #include "config.h"
+#include "entity.h"
 
-class Entity;
-
-class Map
+class Map : public Serializable
 {
 	using Uint8 = unsigned char;
 
@@ -13,11 +12,14 @@ public:
 	Map();
 	~Map();
 
-	void Initialize();
 	void MoveLocalMap( Dir dir );
 
+	void SetLocalToWorld( const Vector2& l2w );
 	const Vector2& GetLocalToWorld() const;
 	const Entity* GetEntityAt( const Vector2& pos ) const;
+
+	virtual void OnSave() override;
+	virtual void OnLoad() override;
 	
 private:
 	void LoadWorld( const char* fileName );

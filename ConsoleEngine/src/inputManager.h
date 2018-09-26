@@ -10,6 +10,9 @@ public:
 	void Update();
 
 	Dir GetMovementDir() const;
+	bool GetRestartRequest() const;
+	bool GetExitRequest() const;
+	bool GetSaveRequest() const;
 	unsigned char GetLastInput() const;
 
 private:

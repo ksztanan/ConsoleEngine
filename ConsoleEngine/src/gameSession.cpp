@@ -12,7 +12,7 @@ namespace engine
 	GameSession::GameSession()
 		: m_player( nullptr )
 	{
-		Initialize();
+		m_player = new Player();	
 	}
 
 	GameSession::~GameSession()
@@ -25,15 +25,14 @@ namespace engine
 
 	void GameSession::Update()
 	{
+		if( engine::Engine::Get().GetInputManager().GetSaveRequest() )
+		{
+			OnSave();
+		}
+
 		HandleMovement();
 		Draw();
 		DrawDebug();
-	}
-
-	void GameSession::Initialize()
-	{
-		m_map.Initialize();
-		m_player = new Player();
 	}
 
 	void GameSession::HandleMovement()
@@ -97,38 +96,26 @@ namespace engine
 		utility::DirToOffset( dir, testedPos );
 		testedPos += m_map.GetLocalToWorld();
 
-		if( testedPos.X < 0 || testedPos.X > ( config::WORLD_MAP_SIZE_X - config::LOC_MAP_SIZE_X ) )
-		{
-			return false;
-		}
-
-		if( testedPos.Y < 0 || testedPos.Y > ( config::WORLD_MAP_SIZE_Y - config::LOC_MAP_SIZE_Y ) )
-		{
-			return false;
-		}
-
-		// todo - magic numbers
-		if( ( m_player->GetPos().X < config::PLAYER_SPAWN_X ) && ( dir == Dir::Right ) )
-		{
-			return false;
-		}
-
-		if( ( m_player->GetPos().X > ( config::LOC_MAP_SIZE_X - config::PLAYER_SPAWN_X + 1 ) ) && ( dir == Dir::Left ) )
-		{
-			return false;
-		}
-
-		if( ( m_player->GetPos().Y < config::PLAYER_SPAWN_Y ) && ( dir == Dir::Down ) )
-		{
-			return false;
-		}
-
-		if( ( m_player->GetPos().Y > ( config::LOC_MAP_SIZE_Y - config::PLAYER_SPAWN_Y + 1 ) ) && ( dir == Dir::Up ) )
-		{
-			return false;
-		}
+		if( testedPos.X < 0 || testedPos.X > ( config::WORLD_MAP_SIZE_X - config::LOC_MAP_SIZE_X ) )						{ return false; }
+		if( testedPos.Y < 0 || testedPos.Y > ( config::WORLD_MAP_SIZE_Y - config::LOC_MAP_SIZE_Y ) )						{ return false; }
+		if( ( m_player->GetPos().X < config::PLAYER_SPAWN_X ) && ( dir == Dir::Right ) )									{ return false; }
+		if( ( m_player->GetPos().X > ( config::LOC_MAP_SIZE_X - config::PLAYER_SPAWN_X + 1 ) ) && ( dir == Dir::Left ) )	{ return false; }
+		if( ( m_player->GetPos().Y < config::PLAYER_SPAWN_Y ) && ( dir == Dir::Down ) )										{ return false; }
+		if( ( m_player->GetPos().Y > ( config::LOC_MAP_SIZE_Y - config::PLAYER_SPAWN_Y + 1 ) ) && ( dir == Dir::Up ) )		{ return false; }
 
 		return true;
+	}
+
+	void GameSession::OnSave()
+	{
+		m_map.OnSave();
+		m_player->OnSave();
+	}
+
+	void GameSession::OnLoad()
+	{
+		m_map.OnLoad();
+		m_player->OnLoad();
 	}
 
 	void GameSession::Draw()

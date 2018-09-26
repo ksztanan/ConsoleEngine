@@ -2,7 +2,16 @@
 
 #include "types.h"
 
-class Entity
+class Serializable
+{
+public:
+	virtual ~Serializable() {}
+
+	virtual void OnSave() {}
+	virtual void OnLoad() {}
+};
+
+class Entity : public Serializable
 {
 public:
 	virtual ~Entity() {}
@@ -12,12 +21,12 @@ public:
 	virtual char GetIcon() const = 0;
 };
 
-// todo - put derived classes in separate file 
 class Terrain : public Entity
 {
 public:
 	Terrain();
 	Terrain( const TerrainType type );
+	~Terrain();
 
 	virtual bool IsWalkable() const override;
 	virtual void Interact() override;
@@ -31,11 +40,16 @@ class Player : public Entity
 {
 public:
 	Player();
+	~Player();
 
 	virtual bool IsWalkable() const override;
 	virtual void Interact() override;
 	virtual char GetIcon() const override;
 
+	virtual void OnSave() override;
+	virtual void OnLoad() override;
+
+	void SetPos( const Vector2& pos );
 	Vector2& GetPos();
 
 	void MoveInDir( Dir dir );

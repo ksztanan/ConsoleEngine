@@ -96,20 +96,16 @@ void Map::DeleteLocalMap()
 
 void Map::HandleStreaming( Dir dir )
 {
-	Uint8 newObj = 0;
-	Uint8 deletedObj = 0;
-
 	EntityFactory factory;
 	if( dir == Dir::Up )
 	{
-		//delete bottom line
+		//delete bottom row
 		for( int x = 0; x < config::LOC_MAP_SIZE_X; ++x )
 		{
 			delete m_localMap[ x ][ config::LOC_MAP_SIZE_Y - 1 ];
-			++deletedObj;
 		}
 
-		// move lines down
+		// move rows down
 		for( int y = config::LOC_MAP_SIZE_Y - 1; y > 0; --y )
 		{
 			for( int x = 0; x < config::LOC_MAP_SIZE_X; ++x )
@@ -118,26 +114,24 @@ void Map::HandleStreaming( Dir dir )
 			}
 		}
 
-		//create and insert top line
+		//create and insert top row
 		for( int x = 0; x < config::LOC_MAP_SIZE_X; ++x )
 		{
 			Entity* entityPtr = factory.CreateObject( m_worldMap[ m_localToWorld.X + x ][ m_localToWorld.Y ] );
 			assert( entityPtr );
-			++newObj;
 
 			m_localMap[ x ][ 0 ] = entityPtr;
 		}
 	}
 	else if( dir == Dir::Down )
 	{
-		//delete top line
+		//delete top row
 		for( int x = 0; x < config::LOC_MAP_SIZE_X; ++x )
 		{
 			delete m_localMap[ x ][ 0 ];
-			++deletedObj;
 		}
 
-		// move lines up
+		// move rows up
 		for( int y = 1; y < config::LOC_MAP_SIZE_Y; ++y )
 		{
 			for( int x = 0; x < config::LOC_MAP_SIZE_X; ++x )
@@ -146,30 +140,68 @@ void Map::HandleStreaming( Dir dir )
 			}
 		}
 
-		//create and insert bottom line
+		//create and insert bottom row
 		for( int x = 0; x < config::LOC_MAP_SIZE_X; ++x )
 		{
 			Entity* entityPtr = factory.CreateObject( m_worldMap[ m_localToWorld.X + x ][ m_localToWorld.Y + config::LOC_MAP_SIZE_Y - 1 ] );
 			assert( entityPtr );
-			++newObj;
 
 			m_localMap[ x ][ config::LOC_MAP_SIZE_Y - 1 ] = entityPtr;
 		}
 	}
 	else if( dir == Dir::Right )
 	{
-		DeleteLocalMap();
-		CreateLocalMap( m_localToWorld );
+		//delete left column
+		for( int y = 0; y < config::LOC_MAP_SIZE_Y; ++y )
+		{
+			delete m_localMap[ 0 ][ y ];
+		}
+
+		// move columns left
+		for( int y = 0; y < config::LOC_MAP_SIZE_Y; ++y )
+		{
+			for( int x = 1; x < config::LOC_MAP_SIZE_X; ++x )
+			{
+				m_localMap[ x - 1 ][ y ] = m_localMap[ x ][ y ];
+			}
+		}
+
+		//create and insert right column
+		for( int y = 0; y < config::LOC_MAP_SIZE_Y; ++y )
+		{
+			Entity* entityPtr = factory.CreateObject( m_worldMap[ m_localToWorld.X + config::LOC_MAP_SIZE_X - 1 ][ m_localToWorld.Y + y ] );
+			assert( entityPtr );
+
+			m_localMap[ config::LOC_MAP_SIZE_X - 1 ][ y ] = entityPtr;
+		}
 	}
 	else if( dir == Dir::Left )
 	{	
-		DeleteLocalMap();
-		CreateLocalMap( m_localToWorld );
+		//delete right column
+		for( int y = 0; y < config::LOC_MAP_SIZE_Y; ++y )
+		{
+			delete m_localMap[ config::LOC_MAP_SIZE_X - 1 ][ y ];
+		}
+
+		// move columns right
+		for( int y = 0; y < config::LOC_MAP_SIZE_Y; ++y )
+		{
+			for( int x = config::LOC_MAP_SIZE_X - 1; x > 0; --x )
+			{
+				m_localMap[ x ][ y ] = m_localMap[ x - 1 ][ y ];
+			}
+		}
+
+		//create and insert left column
+		for( int y = 0; y < config::LOC_MAP_SIZE_Y; ++y )
+		{
+			Entity* entityPtr = factory.CreateObject( m_worldMap[ m_localToWorld.X ][ m_localToWorld.Y + y ] );
+			assert( entityPtr );
+
+			m_localMap[ 0 ][ y ] = entityPtr;
+		}
 	}
-
-	assert( newObj == deletedObj );
 }
-
 
 const Vector2& Map::GetLocalToWorld() const
 {

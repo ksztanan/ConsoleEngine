@@ -15,44 +15,49 @@ Dir InputManager::GetMovementDir() const
 {
 	Dir dir = Dir::Undefined;
 
-	switch( m_lastInput )
+	if( m_lastInput == InputActionToButton( InputAction::MoveUp ) )
 	{
-		case 'w':
-			dir = Dir::Up;
-			break;
-
-		case 's':
-			dir = Dir::Down;
-			break;
-
-		case 'a':
-			dir = Dir::Left;
-			break;
-
-		case 'd':
-			dir = Dir::Right;
-			break;
+		dir = Dir::Up;
+	}
+	else if( m_lastInput == InputActionToButton( InputAction::MoveDown ) )
+	{
+		dir = Dir::Down;
+	}
+	else if( m_lastInput == InputActionToButton( InputAction::MoveLeft ) )
+	{
+		dir = Dir::Left;
+	}
+	else if( m_lastInput == InputActionToButton( InputAction::MoveRight ) )
+	{
+		dir = Dir::Right;
 	}
 
 	return dir;
 }
 
-bool InputManager::GetRestartRequest() const
+bool InputManager::IsActionActive( const InputAction action ) const
 {
-	return m_lastInput == 'r';
-}
-
-bool InputManager::GetExitRequest() const
-{
-	return m_lastInput == 'q';
-}
-
-bool InputManager::GetSaveRequest() const
-{
-	return m_lastInput == 'p';
+	return m_lastInput == InputActionToButton( action );
 }
 
 unsigned char InputManager::GetLastInput() const
 {
 	return m_lastInput;
+}
+
+unsigned char InputManager::InputActionToButton( const InputAction action ) const
+{
+	switch( action )
+	{
+		case MoveUp:			return 'w';
+		case MoveDown:			return 's';
+		case MoveLeft:			return 'a';
+		case MoveRight:			return 'd';
+		case Interact:			return ' ';
+		case SaveGame:			return 'p';
+		case RestartGame:		return 'r';
+		case QuitGame:			return 'q';		
+	}
+
+	return '?';
 }

@@ -25,7 +25,7 @@ namespace engine
 		Engine( const Engine& ) {}
 		void operator=( const Engine& ) {}
 
-		void HandleGameSession();
+		void UpdateGameSession();
 		void CreateGameSession();
 		void DestroyGameSession();
 

@@ -25,14 +25,47 @@ namespace engine
 
 	void GameSession::Update()
 	{
-		if( engine::Engine::Get().GetInputManager().GetSaveRequest() )
+		if( engine::Engine::Get().GetInputManager().IsActionActive( InputAction::SaveGame ) )
 		{
 			OnSave();
 		}
 
+		HandleInteractions();
 		HandleMovement();
 		Draw();
 		DrawDebug();
+	}
+
+	void GameSession::HandleInteractions()
+	{
+		if( Engine::Get().GetInputManager().IsActionActive( InputAction::Interact ) )
+		{
+			Vector2 playerPos = m_player->GetPos();
+
+			Vector2 pos = Vector2( playerPos.X - 1, playerPos.Y );
+			if( IsWithinLocalBounds( pos ) )
+			{
+				m_player->Interact( m_map.GetEntityAt( pos ) );
+			}
+
+			pos = Vector2( playerPos.X + 1, playerPos.Y );
+			if( IsWithinLocalBounds( pos ) )
+			{
+				m_player->Interact( m_map.GetEntityAt( pos ) );
+			}
+
+			pos = Vector2( playerPos.X, playerPos.Y - 1 );
+			if( IsWithinLocalBounds( pos ) )
+			{
+				m_player->Interact( m_map.GetEntityAt( pos ) );
+			}
+
+			pos = Vector2( playerPos.X, playerPos.Y + 1 );
+			if( IsWithinLocalBounds( pos ) )
+			{
+				m_player->Interact( m_map.GetEntityAt( pos ) );
+			}
+		}
 	}
 
 	void GameSession::HandleMovement()

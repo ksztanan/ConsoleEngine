@@ -211,7 +211,7 @@ const Vector2& Map::GetLocalToWorld() const
 	return m_localToWorld;
 }
 
-const Entity* Map::GetEntityAt( const Vector2& pos ) const
+Entity* Map::GetEntityAt( const Vector2& pos ) const
 {
 	return m_localMap[ pos.X ][ pos.Y ];
 }

@@ -56,14 +56,15 @@ namespace engine
 			while( true )
 			{
 				system( "cls" );
-				HandleGameSession();
+				UpdateGameSession();
 				DrawDebug();
+
 				m_inputManager.Update();
-				if( m_inputManager.GetRestartRequest() )
+				if( m_inputManager.IsActionActive( InputAction::RestartGame ) )
 				{
 					break;
 				}
-				else if( m_inputManager.GetExitRequest() )
+				else if( m_inputManager.IsActionActive( InputAction::QuitGame ) )
 				{
 					mainLoop = false;
 					break;
@@ -90,7 +91,7 @@ namespace engine
 		return m_allocationTracker;
 	}
 
-	void Engine::HandleGameSession()
+	void Engine::UpdateGameSession()
 	{
 		if( m_gameSession )
 		{

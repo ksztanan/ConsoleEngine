@@ -33,14 +33,11 @@ namespace utility
 	{
 		switch( type )
 		{
-			case Ground:
-				return ',';
-			case Forest:
-				return 'A';
-			case Water:
-				return 'S';
-			case Rock:
-				return 'O';
+			case Ground:			return ',';
+			case Forest:			return 'A';
+			case Water:				return 'S';
+			case Rock:				return 'O';
+			case Destroyed:			return '.';
 		}
 
 		return '?';
@@ -50,14 +47,11 @@ namespace utility
 	{
 		switch( icon )
 		{
-			case ',':
-				return TerrainType::Ground;
-			case '^':
-				return TerrainType::Forest;
-			case '~':
-				return TerrainType::Water;
-			case 'O':
-				return TerrainType::Rock;
+			case ',':				return TerrainType::Ground;
+			case '^':				return TerrainType::Forest;
+			case '~':				return TerrainType::Water;
+			case 'O':				return TerrainType::Rock;
+			case '.':				return TerrainType::Destroyed;
 		}
 
 		return TerrainType::Invalid;

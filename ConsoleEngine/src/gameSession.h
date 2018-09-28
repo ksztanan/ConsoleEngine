@@ -17,6 +17,7 @@ namespace engine
 		void Update();
 
 	private:
+		void HandleInteractions();
 		void HandleMovement();
 		bool IsMovementPossible( Dir dir ) const;
 		bool IsWithinLocalBounds( const Vector2& pos ) const;

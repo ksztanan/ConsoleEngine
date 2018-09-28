@@ -12,6 +12,7 @@ enum TerrainType
 	Forest,
 	Water,
 	Rock,
+	Destroyed,
 
 	Invalid
 };

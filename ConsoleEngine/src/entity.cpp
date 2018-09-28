@@ -17,7 +17,7 @@ Terrain::~Terrain()
 
 bool Terrain::IsWalkable() const
 {
-	if( m_type == TerrainType::Ground || m_type == TerrainType::Forest )
+	if( m_type == TerrainType::Destroyed || m_type == TerrainType::Ground || m_type == TerrainType::Forest )
 	{
 		return true;
 	}
@@ -25,12 +25,22 @@ bool Terrain::IsWalkable() const
 	return false;
 }
 
-void Terrain::Interact()
+void Terrain::Interact( Entity* ent )
 {}
 
 char Terrain::GetIcon() const
 {
 	return utility::TypeToIcon( m_type );
+}
+
+TerrainType Terrain::GetType() const
+{
+	return m_type;
+}
+
+void Terrain::Destroy()
+{
+	m_type = TerrainType::Destroyed;
 }
 
 //--------------------------------------------------------------------------------------
@@ -51,8 +61,15 @@ bool Player::IsWalkable() const
 	return false;
 }
 
-void Player::Interact()
+void Player::Interact( Entity* ent )
 {
+	if( Terrain* terrain = (Terrain*)ent )
+	{
+		if( terrain->GetType() == TerrainType::Forest )
+		{
+			terrain->Destroy();
+		}
+	}
 }
 
 char Player::GetIcon() const

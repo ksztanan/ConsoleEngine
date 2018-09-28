@@ -17,7 +17,7 @@ public:
 	virtual ~Entity() {}
 
 	virtual bool IsWalkable() const = 0;
-	virtual void Interact() = 0;
+	virtual void Interact( Entity* ent ) = 0;
 	virtual char GetIcon() const = 0;
 };
 
@@ -29,8 +29,11 @@ public:
 	~Terrain();
 
 	virtual bool IsWalkable() const override;
-	virtual void Interact() override;
+	virtual void Interact( Entity* ent ) override;
 	virtual char GetIcon() const override;
+
+	TerrainType GetType() const;
+	void Destroy();
 
 private:
 	TerrainType m_type;
@@ -43,7 +46,7 @@ public:
 	~Player();
 
 	virtual bool IsWalkable() const override;
-	virtual void Interact() override;
+	virtual void Interact( Entity* ent ) override;
 	virtual char GetIcon() const override;
 
 	virtual void OnSave() override;

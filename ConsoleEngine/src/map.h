@@ -16,7 +16,7 @@ public:
 
 	void SetLocalToWorld( const Vector2& l2w );
 	const Vector2& GetLocalToWorld() const;
-	const Entity* GetEntityAt( const Vector2& pos ) const;
+	Entity* GetEntityAt( const Vector2& pos ) const;
 
 	virtual void OnSave() override;
 	virtual void OnLoad() override;

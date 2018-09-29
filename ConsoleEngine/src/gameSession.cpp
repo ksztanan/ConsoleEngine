@@ -12,7 +12,9 @@ namespace engine
 	GameSession::GameSession()
 		: m_player( nullptr )
 	{
-		m_player = new Player();	
+		m_player = new Player();
+
+		LoadSessionData();
 	}
 
 	GameSession::~GameSession()
@@ -27,13 +29,12 @@ namespace engine
 	{
 		if( engine::Engine::Get().GetInputManager().IsActionActive( InputAction::SaveGame ) )
 		{
-			OnSave();
+			SaveSessionData();
 		}
 
 		HandleInteractions();
 		HandleMovement();
 		Draw();
-		DrawDebug();
 	}
 
 	void GameSession::HandleInteractions()
@@ -42,28 +43,25 @@ namespace engine
 		{
 			Vector2 playerPos = m_player->GetPos();
 
-			Vector2 pos = Vector2( playerPos.X - 1, playerPos.Y );
-			if( IsWithinLocalBounds( pos ) )
+			for( int i = -1; i <= 1; ++i )
 			{
-				m_player->Interact( m_map.GetEntityAt( pos ) );
-			}
+				Vector2 pos = Vector2( playerPos.X + i, playerPos.Y );
+				if( IsWithinLocalBounds( pos ) )
+				{
+					if( m_player->Interact( m_map.GetEntityAt( pos ) ) == InteractionResult::TerrainDestroyed )
+					{
+						m_map.DestroyEntityAt( pos );
+					}
+				}
 
-			pos = Vector2( playerPos.X + 1, playerPos.Y );
-			if( IsWithinLocalBounds( pos ) )
-			{
-				m_player->Interact( m_map.GetEntityAt( pos ) );
-			}
-
-			pos = Vector2( playerPos.X, playerPos.Y - 1 );
-			if( IsWithinLocalBounds( pos ) )
-			{
-				m_player->Interact( m_map.GetEntityAt( pos ) );
-			}
-
-			pos = Vector2( playerPos.X, playerPos.Y + 1 );
-			if( IsWithinLocalBounds( pos ) )
-			{
-				m_player->Interact( m_map.GetEntityAt( pos ) );
+				pos = Vector2( playerPos.X, playerPos.Y + i );
+				if( IsWithinLocalBounds( pos ) )
+				{
+					if( m_player->Interact( m_map.GetEntityAt( pos ) ) == InteractionResult::TerrainDestroyed )
+					{
+						m_map.DestroyEntityAt( pos );
+					}
+				}
 			}
 		}
 	}
@@ -139,16 +137,26 @@ namespace engine
 		return true;
 	}
 
-	void GameSession::OnSave()
+	void GameSession::SaveSessionData()
 	{
-		m_map.OnSave();
-		m_player->OnSave();
+		SaveData data;
+		data.m_playerPos = m_player->GetPos();
+		data.m_mapPos = m_map.GetLocalToWorld();
+		data.m_destroyedEntities = m_map.GetDestroyedEntities();
+
+		engine::Engine::Get().GetSaveSystem().Save( data );
 	}
 
-	void GameSession::OnLoad()
+	void GameSession::LoadSessionData()
 	{
+		SaveData data;
+		if( engine::Engine::Get().GetSaveSystem().Load( data ) )
+		{
+			m_player->SetPos( data.m_playerPos );
+			m_map.SetLocalToWorld( data.m_mapPos );
+			m_map.SetDestroyedEntities( data.m_destroyedEntities );
+		}
 		m_map.OnLoad();
-		m_player->OnLoad();
 	}
 
 	void GameSession::Draw()
@@ -186,9 +194,10 @@ namespace engine
 
 		std::cout << "GameSession Debug:\n";
 		std::cout << "--------------------------------------\n";
-		std::cout << "Player local pos: [ " << playerLocalPos.X << ", " << playerLocalPos.Y << " ]\n";
-		std::cout << "Player world pos: [ " << playerWorldPos.X << ", " << playerWorldPos.Y << " ]\n";
-		std::cout << "LocalToWorld: [ " << localToWorld.X << ", " << localToWorld.Y << " ]\n";
+		std::cout << "CURRENT DATA" << "\t\t\t" << "[Vec2]" << "\n";
+		std::cout << "Player local pos:" << "\t\t" << "[" << playerLocalPos.X << "," << playerLocalPos.Y << "]\n";
+		std::cout << "Player world pos:" << "\t\t" << "[" << playerWorldPos.X << "," << playerWorldPos.Y << "]\n";
+		std::cout << "Map LocalToWorld:" << "\t\t" << "[" << localToWorld.X << "," << localToWorld.Y << "]\n";
 		std::cout << "\n\n";
 	}
 }

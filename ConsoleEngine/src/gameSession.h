@@ -15,6 +15,7 @@ namespace engine
 		~GameSession();
 
 		void Update();
+		void DrawDebug() const;
 
 	private:
 		void HandleInteractions();
@@ -23,11 +24,10 @@ namespace engine
 		bool IsWithinLocalBounds( const Vector2& pos ) const;
 		bool ShouldMoveLocalMap( Dir dir ) const;
 
-		void OnSave();
-		void OnLoad();
+		void SaveSessionData();
+		void LoadSessionData();
 
-		void Draw();
-		void DrawDebug() const;
+		void Draw();	
 
 	private:
 		Map m_map;

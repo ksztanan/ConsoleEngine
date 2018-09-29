@@ -37,7 +37,7 @@ namespace utility
 			case Forest:			return 'A';
 			case Water:				return 'S';
 			case Rock:				return 'O';
-			case Destroyed:			return '.';
+			case Destroyed:			return 'x';
 		}
 
 		return '?';
@@ -51,7 +51,7 @@ namespace utility
 			case '^':				return TerrainType::Forest;
 			case '~':				return TerrainType::Water;
 			case 'O':				return TerrainType::Rock;
-			case '.':				return TerrainType::Destroyed;
+			case 'x':				return TerrainType::Destroyed;
 		}
 
 		return TerrainType::Invalid;

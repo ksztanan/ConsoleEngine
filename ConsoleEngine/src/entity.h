@@ -7,17 +7,16 @@ class Serializable
 public:
 	virtual ~Serializable() {}
 
-	virtual void OnSave() {}
 	virtual void OnLoad() {}
 };
 
-class Entity : public Serializable
+class Entity
 {
 public:
 	virtual ~Entity() {}
 
 	virtual bool IsWalkable() const = 0;
-	virtual void Interact( Entity* ent ) = 0;
+	virtual InteractionResult Interact( Entity* ent ) = 0;
 	virtual char GetIcon() const = 0;
 };
 
@@ -29,7 +28,7 @@ public:
 	~Terrain();
 
 	virtual bool IsWalkable() const override;
-	virtual void Interact( Entity* ent ) override;
+	virtual InteractionResult Interact( Entity* ent ) override;
 	virtual char GetIcon() const override;
 
 	TerrainType GetType() const;
@@ -46,14 +45,11 @@ public:
 	~Player();
 
 	virtual bool IsWalkable() const override;
-	virtual void Interact( Entity* ent ) override;
+	virtual InteractionResult Interact( Entity* ent ) override;
 	virtual char GetIcon() const override;
 
-	virtual void OnSave() override;
-	virtual void OnLoad() override;
-
 	void SetPos( const Vector2& pos );
-	Vector2& GetPos();
+	const Vector2& GetPos() const;
 
 	void MoveInDir( Dir dir );
 

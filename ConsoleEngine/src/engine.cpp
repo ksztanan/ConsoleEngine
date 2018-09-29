@@ -5,11 +5,13 @@
 #include <iostream>
 #include <assert.h>
 
+AllocationTracker allocationTracker;
+
 void* operator new( size_t size )
 {
 	void* address = malloc( size );
 	assert( address );
-	engine::Engine::Get().GetAllocationTracker().Allocate( address, size );
+	allocationTracker.Allocate( address, size );
 
 	return address;
 }
@@ -17,7 +19,7 @@ void* operator new( size_t size )
 void operator delete( void* address )
 {
 	assert( address );
-	engine::Engine::Get().GetAllocationTracker().Deallocate( address );
+	allocationTracker.Deallocate( address );
 	free( address );
 }
 
@@ -33,7 +35,7 @@ namespace engine
 	Engine::Engine()
 		: m_gameSession( nullptr )
 	{
-		m_allocationTracker.Allocate( this, sizeof( Engine ) - sizeof( AllocationTracker ) );
+		allocationTracker.Allocate( this, sizeof( Engine ) );
 	}
 
 	Engine::~Engine()
@@ -43,7 +45,7 @@ namespace engine
 			delete m_gameSession;
 		}
 
-		m_allocationTracker.Deallocate( this );
+		allocationTracker.Deallocate( this );
 	}
 
 	void Engine::Run()
@@ -69,7 +71,7 @@ namespace engine
 					mainLoop = false;
 					break;
 				}
-				m_allocationTracker.ResetFrame();
+				allocationTracker.ResetFrame();
 			}
 
 			DestroyGameSession();
@@ -84,11 +86,6 @@ namespace engine
 	SaveSystem& Engine::GetSaveSystem()
 	{
 		return m_saveSystem;
-	}
-
-	AllocationTracker& Engine::GetAllocationTracker()
-	{
-		return m_allocationTracker;
 	}
 
 	void Engine::UpdateGameSession()
@@ -120,6 +117,12 @@ namespace engine
 
 	void Engine::DrawDebug() const
 	{
-		m_allocationTracker.DrawDebug();
+		if( m_gameSession )
+		{
+			m_gameSession->DrawDebug();
+		}
+
+		allocationTracker.DrawDebug();
+		m_saveSystem.DrawDebug();
 	}
 }

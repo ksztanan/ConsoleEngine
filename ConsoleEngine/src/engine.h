@@ -18,7 +18,6 @@ namespace engine
 
 		InputManager& GetInputManager();
 		SaveSystem& GetSaveSystem();
-		AllocationTracker& GetAllocationTracker();
 
 	private:
 		Engine();
@@ -34,7 +33,6 @@ namespace engine
 	private:
 		InputManager m_inputManager;
 		SaveSystem m_saveSystem;
-		AllocationTracker m_allocationTracker;
 		GameSession* m_gameSession;
 	};
 }

@@ -12,8 +12,7 @@ Terrain::Terrain( const TerrainType type )
 {}
 
 Terrain::~Terrain()
-{
-}
+{}
 
 bool Terrain::IsWalkable() const
 {
@@ -25,8 +24,10 @@ bool Terrain::IsWalkable() const
 	return false;
 }
 
-void Terrain::Interact( Entity* ent )
-{}
+InteractionResult Terrain::Interact( Entity* ent )
+{
+	return InteractionResult::None;
+}
 
 char Terrain::GetIcon() const
 {
@@ -48,8 +49,6 @@ void Terrain::Destroy()
 Player::Player()
 {
 	m_pos = Vector2( config::PLAYER_SPAWN_X, config::PLAYER_SPAWN_Y );
-
-	OnLoad();
 }
 
 Player::~Player()
@@ -61,15 +60,18 @@ bool Player::IsWalkable() const
 	return false;
 }
 
-void Player::Interact( Entity* ent )
+InteractionResult Player::Interact( Entity* ent )
 {
 	if( Terrain* terrain = (Terrain*)ent )
 	{
 		if( terrain->GetType() == TerrainType::Forest )
 		{
 			terrain->Destroy();
+			return InteractionResult::TerrainDestroyed;
 		}
 	}
+
+	return InteractionResult::None;
 }
 
 char Player::GetIcon() const
@@ -77,22 +79,12 @@ char Player::GetIcon() const
 	return '@';
 }
 
-void Player::OnSave()
-{
-	engine::Engine::Get().GetSaveSystem().Save( SaveDataType::PlayerPos, this );
-}
-
-void Player::OnLoad()
-{
-	engine::Engine::Get().GetSaveSystem().Load( SaveDataType::PlayerPos, this );
-}
-
 void Player::SetPos( const Vector2& pos )
 {
 	m_pos = pos;
 }
 
-Vector2& Player::GetPos()
+const Vector2& Player::GetPos() const
 {
 	return m_pos;
 }

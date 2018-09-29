@@ -1,11 +1,5 @@
 #pragma once
 
-enum SaveDataType
-{
-	PlayerPos,
-	MapPos
-};
-
 enum TerrainType
 {
 	Ground,
@@ -15,6 +9,23 @@ enum TerrainType
 	Destroyed,
 
 	Invalid
+};
+
+enum Dir
+{
+	Up,
+	Right,
+	Down,
+	Left,
+
+	Undefined
+};
+
+enum InteractionResult
+{
+	TerrainDestroyed,
+
+	None
 };
 
 struct Vector2
@@ -41,18 +52,9 @@ struct Vector2
 		return *this;
 	}
 
+	bool operator==( const Vector2& rhs ) const { return ( X == rhs.X ) && ( Y == rhs.Y ); }
 	bool operator!=( const Vector2& rhs ) const { return ( X != rhs.X ) || ( Y != rhs.Y ); }
 
 	int X;
 	int Y;
-};
-
-enum Dir
-{
-	Up,
-	Right,
-	Down,
-	Left,
-
-	Undefined
 };

@@ -32,5 +32,9 @@ public:
 	void DrawDebug() const;
 
 private:
+	void LoadFromFile();
+	void SaveToFile();
+
+private:
 	SaveData m_save;
 };

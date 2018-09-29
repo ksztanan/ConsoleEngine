@@ -3,7 +3,7 @@
 #include <iostream>
 #include <assert.h>
 
-//#define DETAILED_DEBUG
+//#define DBG_SHOW_ALLOCATIONS
 
 AllocationTracker::AllocationTracker()
 	: m_totalBytesAllocated( 0 )
@@ -88,7 +88,7 @@ void AllocationTracker::DrawDebug() const
 	std::cout << "Count:"				<< "\t\t\t\t"										<< m_totalAllocations			<< "\n";
 	std::cout << "\n";
 
-#ifdef DETAILED_DEBUG
+#ifdef DBG_SHOW_ALLOCATIONS
 	std::cout << "Detailed allocations:\n\n";
 	for( int i = 0; i < ALLOCATIONS_CAP; ++i )
 	{
@@ -99,7 +99,7 @@ void AllocationTracker::DrawDebug() const
 	}
 
 	std::cout << "\n";
-#endif // DETAILED_DEBUG
+#endif // DBG_SHOW_ALLOCATIONS
 }
 
 AllocationTracker::Allocation::Allocation()
